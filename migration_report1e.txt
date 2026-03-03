@@ -1,0 +1,37 @@
+Detected Features:
+GPIO: True
+SPI: False
+UART: True
+I2C: False
+ADC: True
+DMA: True
+
+TIMERS: ['TIM1', 'TIM6', 'TIM4']
+
+INTERRUPTS: ['DMA1_Channel1_IRQHandler', 'ADC1_2_IRQHandler', 'FDCAN1_IT0_IRQHandler', 'FDCAN1_IT1_IRQHandler', 'TIM1_UP_TIM16_IRQHandler', 'TIM4_IRQHandler', 'USART1_IRQHandler', 'TIM6_DAC_IRQHandler']
+
+CALLBACKS: ['HAL_FDCAN_RxFifo0Callback', 'HAL_UART_TxCpltCallback', 'HAL_UART_RxCpltCallback', 'HAL_ADCEx_InjectedConvCpltCallback']
+
+UART_APIS: ['HAL_UART_Transmit_IT', 'HAL_UART_Receive_IT', 'HAL_UART_Init', 'HAL_UART_TxCpltCallback', 'HAL_UART_RxCpltCallback', 'HAL_UART_MspInit', 'HAL_UART_MspDeInit', 'HAL_UART_IRQHandler']
+
+ADC_APIS: ['HAL_ADC_Start_DMA', 'HAL_ADC_Init', 'HAL_ADC_ConfigChannel', 'HAL_ADC_MspInit', 'HAL_ADC_MspDeInit', 'HAL_ADC_IRQHandler']
+
+CLOCK_CONFIG: True
+DIRECT_REGISTER: True
+
+DIRECT_REGISTER_LINES: ['switch (RCC->CFGR & RCC_CFGR_SWS)', 'pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC);', 'pllm = ((RCC->PLLCFGR & RCC_PLLCFGR_PLLM) >> 4) + 1U ;', 'pllvco = pllvco * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 8);', 'pllr = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLR) >> 25) + 1U) * 2U;', 'tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];']
+
+CLOCK_REGISTER_LINES: ['switch (RCC->CFGR & RCC_CFGR_SWS)', 'pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC);', 'pllm = ((RCC->PLLCFGR & RCC_PLLCFGR_PLLM) >> 4) + 1U ;', 'pllvco = pllvco * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 8);', 'pllr = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLR) >> 25) + 1U) * 2U;', 'tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];']
+
+APP_REGISTER_LINES: []
+
+Migration Guidance:
+- UART detected. Map STM UART to TI UART driverlib module.
+- ADC detected. Verify resolution and sampling differences.
+- Timers detected: TIM1, TIM6, TIM4
+- Map STM TIM modules to TI Timer/PWM modules.
+- Interrupts detected. Interrupt vector mapping required.
+- System clock configuration detected. Redesign clock tree in TI.
+- Direct Register Access Analysis:
+- - RCC clock configuration registers detected.
+- - Appears inside clock calculation logic.
